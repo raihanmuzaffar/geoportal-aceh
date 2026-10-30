@@ -131,5 +131,49 @@ geoportal-aceh/
 
 ---
 
+# 📊 Tabel Relasional (Struktur Database)
+
+Berikut adalah struktur tabel utama beserta relasinya (Primary Key disingkat **PK**, Foreign Key disingkat **FK**).
+
+| Nama Tabel | Kolom Utama | Tipe Data | Keterangan |
+| :--- | :--- | :--- | :--- |
+| **`skpd`** | `id` | BIGINT (PK) | ID Instansi (Auto Increment) |
+| | `name`, `short_name` | VARCHAR | Nama lengkap & singkatan dinas |
+| | `email`, `phone`, `address` | VARCHAR/TEXT | Kontak instansi |
+| **`users`** | `id` | BIGINT (PK) | ID Pengguna |
+| | `skpd_id` | BIGINT (FK) | Relasi ke tabel `skpd` (Nullable) |
+| | `name`, `email`, `password` | VARCHAR | Data kredensial |
+| | `role` | ENUM | `super_admin`, `admin`, `operator` |
+| **`categories`** | `id` | BIGINT (PK) | ID Kategori Data |
+| | `name`, `slug`, `icon` | VARCHAR | Nama kategori (Batas Wilayah, dll) |
+| **`datasets`** | `id` | BIGINT (PK) | ID Dataset |
+| | `category_id` | BIGINT (FK) | Relasi ke `categories` |
+| | `skpd_id` | BIGINT (FK) | Relasi ke `skpd` |
+| | `created_by` | BIGINT (FK) | Relasi ke `users` (Admin pembuat) |
+| | `title`, `slug`, `description` | VARCHAR/TEXT | Metadata dataset |
+| | `is_published` | BOOLEAN | Status publikasi |
+| **`layers`** | `id` | BIGINT (PK) | ID Layer Spasial |
+| | `dataset_id` | BIGINT (FK) | Relasi ke `datasets` (Nullable) |
+| | `name`, `slug` | VARCHAR | Nama layer |
+| | `geometry_type`, `srid` | VARCHAR/INT | Tipe geometri (Polygon/Line/Point) |
+| | `style` | JSONB | Pengaturan warna garis/isi |
+| **`layer_geometries`** | `id` | BIGINT (PK) | ID Geometri |
+| | `layer_id` | BIGINT (FK) | Relasi ke `layers` |
+| | `properties` | JSONB | Atribut data (Nama desa, dll) |
+| | `geom` | GEOMETRY | Tipe Spasial PostGIS (SRID 4326) |
+| **`news`** | `id` | BIGINT (PK) | ID Berita/Agenda |
+| | `created_by` | BIGINT (FK) | Relasi ke `users` |
+| | `title`, `slug`, `content` | VARCHAR/TEXT | Isi berita |
+| | `type` | ENUM | `news` atau `agenda` |
+| **`story_maps`** | `id` | BIGINT (PK) | ID Story Map |
+| | `title`, `slug`, `description` | VARCHAR/TEXT | Info cerita |
+| | `video_url`, `cover_url` | VARCHAR | Link video dokumenter & gambar |
+| **`story_map_steps`** | `id` | BIGINT (PK) | ID Babak Cerita |
+| | `story_map_id` | BIGINT (FK) | Relasi ke `story_maps` |
+| | `title`, `content` | VARCHAR/TEXT | Teks narasi |
+| | `center_lat`, `center_lng`, `zoom`| DECIMAL/INT | Koordinat peta tujuan |
+| **`jign_simpuls`** | `id` | BIGINT (PK) | ID Simpul Jaringan JIGN |
+| | `name`, `type`, `technology` | VARCHAR | Data instansi pusat/daerah |
+
 
 
