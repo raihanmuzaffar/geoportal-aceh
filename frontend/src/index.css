@@ -1,0 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    /* Memaksa background dan text berubah saat dark mode aktif */
+    @apply bg-white text-gray-800 antialiased dark:bg-gray-900 dark:text-gray-100;
+  }
+}

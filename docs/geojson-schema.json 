@@ -1,0 +1,154 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Geoportal Aceh — GeoJSON FeatureCollection Schema",
+  "type": "object",
+  "required": ["type", "features"],
+  "properties": {
+    "type": { "const": "FeatureCollection" },
+    "name": { "type": "string", "description": "Nama layer" },
+    "crs": {
+      "type": "object",
+      "properties": {
+        "type": { "const": "name" },
+        "properties": { "name": { "const": "urn:ogc:def:crs:OGC:1.3:CRS84" } }
+      },
+      "description": "Wajib EPSG:4326 / CRS84"
+    },
+    "features": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/feature" }
+    }
+  },
+  "definitions": {
+    "feature": {
+      "type": "object",
+      "required": ["type", "geometry", "properties"],
+      "properties": {
+        "type": { "const": "Feature" },
+        "id": { "type": ["integer", "string"] },
+        "geometry": {
+          "oneOf": [
+            { "$ref": "#/definitions/point" },
+            { "$ref": "#/definitions/lineString" },
+            { "$ref": "#/definitions/polygon" },
+            { "$ref": "#/definitions/multiPolygon" }
+          ]
+        },
+        "properties": {
+          "oneOf": [
+            { "$ref": "#/definitions/propsAdminProvince" },
+            { "$ref": "#/definitions/propsAdminKabKota" },
+            { "$ref": "#/definitions/propsAdminKecamatan" },
+            { "$ref": "#/definitions/propsThematic" }
+          ]
+        }
+      }
+    },
+    "point": {
+      "type": "object",
+      "required": ["type", "coordinates"],
+      "properties": {
+        "type": { "const": "Point" },
+        "coordinates": { "type": "array", "items": {"type": "number"}, "minItems": 2, "maxItems": 3 }
+      }
+    },
+    "lineString": {
+      "type": "object",
+      "required": ["type", "coordinates"],
+      "properties": {
+        "type": { "const": "LineString" },
+        "coordinates": { "type": "array", "items": {"type": "array", "items": {"type": "number"}} }
+      }
+    },
+    "polygon": {
+      "type": "object",
+      "required": ["type", "coordinates"],
+      "properties": {
+        "type": { "const": "Polygon" },
+        "coordinates": { "type": "array", "items": { "type": "array", "items": {"type": "array", "items": {"type": "number"}} } }
+      }
+    },
+    "multiPolygon": {
+      "type": "object",
+      "required": ["type", "coordinates"],
+      "properties": {
+        "type": { "const": "MultiPolygon" },
+        "coordinates": { "type": "array" }
+      }
+    },
+    "propsAdminProvince": {
+      "type": "object",
+      "required": ["name", "code", "level"],
+      "properties": {
+        "name": { "type": "string", "example": "Aceh" },
+        "code": { "type": "string", "example": "11" },
+        "level": { "const": "province" },
+        "area_km2": { "type": "number" },
+        "population": { "type": "integer" }
+      }
+    },
+    "propsAdminKabKota": {
+      "type": "object",
+      "required": ["name", "code", "level", "type"],
+      "properties": {
+        "name": { "type": "string", "example": "Kota Banda Aceh" },
+        "code": { "type": "string", "example": "11.71" },
+        "level": { "const": "kabupaten_kota" },
+        "type": { "enum": ["kabupaten", "kota"] },
+        "province_code": { "const": "11" },
+        "area_km2": { "type": "number" },
+        "population": { "type": "integer" }
+      }
+    },
+    "propsAdminKecamatan": {
+      "type": "object",
+      "required": ["name", "code", "level", "kabupaten_code"],
+      "properties": {
+        "name": { "type": "string", "example": "Baiturrahman" },
+        "code": { "type": "string", "example": "11.71.01" },
+        "level": { "const": "kecamatan" },
+        "kabupaten_code": { "type": "string" },
+        "area_km2": { "type": "number" }
+      }
+    },
+    "propsThematic": {
+      "type": "object",
+      "required": ["name", "dataset_slug", "category"],
+      "properties": {
+        "name": { "type": "string" },
+        "dataset_slug": { "type": "string" },
+        "category": { "type": "string" },
+        "value": { "type": ["number", "string", "null"] },
+        "unit": { "type": ["string", "null"] },
+        "year": { "type": ["integer", "null"] },
+        "source": { "type": ["string", "null"] },
+        "extra": { "type": "object", "description": "Atribut tambahan bebas" }
+      }
+    }
+  }
+}
+
+{
+  "type": "FeatureCollection",
+  "name": "batas-kabkota-aceh",
+  "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+  "features": [
+    {
+      "type": "Feature",
+      "id": 1,
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[[95.3, 5.5], [95.4, 5.5], [95.4, 5.6], [95.3, 5.6], [95.3, 5.5]]]
+      },
+      "properties": {
+        "name": "Kota Banda Aceh",
+        "code": "11.71",
+        "level": "kabupaten_kota",
+        "type": "kota",
+        "province_code": "11",
+        "area_km2": 61.36,
+        "population": 252899
+      }
+    }
+  ]
+}
