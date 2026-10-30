@@ -1,10 +1,4 @@
-Berikut adalah template `README.md` yang sangat lengkap, profesional, dan siap pakai. Template ini dirancang agar klien atau dosen penguji Anda bisa langsung memahami proyek dan menjalankannya tanpa kebingungan.
 
-Silakan buat file baru bernama **`README.md`** di folder utama proyek Anda (sejajar dengan `docker-compose.yml`), lalu **copy-paste** seluruh teks di bawah ini:
-
-***
-
-```markdown
 # 🌐 WebGeoportal Provinsi Aceh
 
 Sistem Informasi Geografis Berbasis Web (WebGIS) yang dirancang untuk memvisualisasikan, mengelola, dan menyebarkan Informasi Geospasial Provinsi Aceh. Proyek ini dibangun dengan arsitektur modern untuk mendukung integrasi data spasial (Satu Data Aceh).
