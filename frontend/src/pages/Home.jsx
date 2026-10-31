@@ -9,9 +9,9 @@ import { Map, BarChart3, Activity, Globe, Calendar, Layers, Compass } from 'luci
 
 /* ---------- Data Statis (Layanan & Kategori) ---------- */
 const layananUtama = [
-  { title: 'Roadmap', icon: Map, to: '#', desc: 'Road Map Simpul Jaringan Daerah Provinsi Aceh.' },
-  { title: 'Geoservis', icon: Globe, to: '#', desc: 'Layanan Data Geospasial Daerah Provinsi Aceh.' },
-  { title: 'SimonGeo', icon: Activity, to: '#', desc: 'Sistem Pemantauan Kinerja Simpul Jaringan Daerah Provinsi Aceh.' },
+  { title: 'Roadmap', icon: Map, to: '/layanan', desc: 'Road Map Simpul Jaringan Daerah Provinsi Aceh.' },
+  { title: 'Geoservis', icon: Globe, to: '/layanan', desc: 'Layanan Data Geospasial Daerah Provinsi Aceh.' },
+  { title: 'SimonGeo', icon: Activity, to: '/layanan', desc: 'Sistem Pemantauan Kinerja Simpul Jaringan Daerah Provinsi Aceh.' },
   { title: 'WebGIS', icon: BarChart3, to: '/webgis', desc: 'Sistem Informasi Geografis Provinsi Aceh.' },
 ];
 
@@ -49,6 +49,14 @@ function SectionHeading({ title, to, linkLabel }) {
 
 /* ---------- Halaman Utama ---------- */
 export default function Home() {
+  // --- SKRIP UJI COBA ERROR OTOMATIS ---
+  // Tambahkan ?crash=true di URL untuk memicu error
+  const queryParams = new URLSearchParams(window.location.search);
+  if (queryParams.get('crash') === 'true') {
+    throw new Error("Simulasi Error Otomatis: Berhasil ditangkap oleh Error Boundary!");
+  }
+  // ------------------------------------
+
   const [categories, setCategories] = useState([]);
   const [newsData, setNewsData] = useState([]);
   const [datasetsData, setDatasetsData] = useState([]);
@@ -119,7 +127,6 @@ export default function Home() {
               <p className="col-span-3 text-sm text-slate-500">Belum ada berita atau agenda.</p>
             ) : (
               newsData.slice(0, 3).map((item) => {
-                // Format tanggal (gunakan event_date jika agenda, created_at jika berita)
                 const dateStr = item.type === 'agenda' && item.event_date 
                   ? item.event_date 
                   : item.created_at;
@@ -138,7 +145,6 @@ export default function Home() {
                       {item.title}
                     </h3>
                     <p className="line-clamp-3 text-[13px] leading-relaxed text-slate-600">
-                      {/* Menghapus tag HTML dari konten berita */}
                       {item.content.replace(/<[^>]+>/g, '')}
                     </p>
                   </article>
@@ -267,7 +273,6 @@ export default function Home() {
               {skpdData.slice(0, 6).map((skpd) => (
                 <div key={skpd.id} className="flex flex-col items-center border border-slate-200 bg-white px-3 py-5 text-center">
                   <div className="mb-3 flex h-16 w-16 items-center justify-center border border-slate-200 bg-slate-50 text-[12px] font-bold text-blue-900 rounded-full">
-                    {/* Mengambil huruf pertama dari short_name sebagai logo sementara */}
                     {skpd.short_name.substring(0, 3).toUpperCase()}
                   </div>
                   <span className="text-[13px] font-semibold text-slate-900 line-clamp-1">{skpd.short_name}</span>

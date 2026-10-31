@@ -11,6 +11,7 @@ use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\StoryMapController;
 use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\JignSimpulController;
+use App\Http\Controllers\Api\SettingController;
 use Illuminate\Support\Facades\Http; // <-- Tambahan Import Http
 
 // Route Publik (Bisa diakses tanpa login)
@@ -62,6 +63,9 @@ Route::prefix('v1')->group(function () {
     Route::get('/dashboard/stats', [DashboardController::class, 'stats']);
 
     Route::get('/jign-simpuls', [JignSimpulController::class, 'index']);
+
+    Route::get('/settings', [SettingController::class, 'index']);
+    Route::post('/settings', [SettingController::class, 'update']);
 
     // --- TAMBAHAN BARU: RUTE BMKG (PROXY) ---
     Route::get('/bmkg/gempa-terkini', function () {
