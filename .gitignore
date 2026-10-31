@@ -16,7 +16,7 @@ backend/storage/logs/
 frontend/node_modules/.vite/
 
 # Data Spasial Besar (Jangan di-push ke Git karena ukurannya besar)
-backend/data-gis/
+
 backend/storage/app/public/thumbnails/
 
 # IDE & OS
